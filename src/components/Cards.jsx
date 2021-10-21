@@ -11,7 +11,6 @@ class Cards extends React.Component {
       collectionName,
       artworkUrl100,
     } = album;
-    console.log(album);
     const path = `/album/${collectionId}`;
 
     return (
