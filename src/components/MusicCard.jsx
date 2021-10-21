@@ -12,7 +12,6 @@ class MusicCard extends React.Component {
     this.state = {
       isLoading: false,
       favorite: false,
-      interactions: 0,
     };
   }
 
@@ -25,11 +24,8 @@ class MusicCard extends React.Component {
     const { name } = target;
     const value = target.checked;
     const { previewUrl, trackId, trackName } = this.props;
-    const { interactions } = this.state;
-
     this.setState({
       [name]: value,
-      interactions: 1,
     });
     const thisSong = {
       trackId,
@@ -38,21 +34,22 @@ class MusicCard extends React.Component {
     };
     this.setState({
       isLoading: true,
+    }, () => {
+      if (value === true) {
+        addSong(thisSong).then(() => {
+          this.setState({
+            isLoading: false,
+          });
+        });
+      } else if (value === false) {
+        removeSong(thisSong).then(() => {
+          const loaded = false;
+          this.setState({
+            isLoading: loaded,
+          });
+        });
+      }
     });
-    if (value === true) {
-      return addSong(thisSong).then(() => {
-        this.setState({
-          isLoading: false,
-        });
-      });
-    } if (value === false && interactions > 0) {
-      return removeSong(trackId).then(() => {
-        const load = false;
-        this.setState({
-          isLoading: load,
-        });
-      });
-    }
   }
 
   loadCheckbox() {
