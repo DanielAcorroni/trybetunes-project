@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
-import { getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 class Favorites extends React.Component {
@@ -8,15 +8,38 @@ class Favorites extends React.Component {
     super();
 
     this.loadFavorites = this.loadFavorites.bind(this);
+    this.onChange = this.onChange.bind(this);
 
     this.state = {
       isLoading: false,
       favoriteSongs: [],
+      favorite: true,
     };
   }
 
   componentDidMount() {
     this.loadFavorites();
+  }
+
+  onChange({ target }) {
+    const { id } = target;
+    console.log(typeof id);
+    const { favoriteSongs } = this.state;
+    const removeObj = favoriteSongs.filter((song) => {
+      console.log(song.trackId);
+      return `${song.trackId}` === id;
+    });
+    console.log(removeObj[0]);
+    this.setState({
+      isLoading: true,
+    }, () => {
+      removeSong(removeObj[0]).then(() => {
+        const loaded = false;
+        this.setState({
+          isLoading: loaded,
+        }, () => this.loadFavorites());
+      });
+    });
   }
 
   loadFavorites() {
@@ -32,7 +55,7 @@ class Favorites extends React.Component {
   }
 
   render() {
-    const { isLoading, favoriteSongs } = this.state;
+    const { isLoading, favoriteSongs, favorite } = this.state;
     if (isLoading === true) {
       return (
         <>
@@ -46,7 +69,7 @@ class Favorites extends React.Component {
         <Header />
         {
           favoriteSongs.map((song) => (
-            <>
+            <div key={ song.trackId }>
               <h4>{song.trackName}</h4>
               <audio
                 key={ song.trackId }
@@ -60,7 +83,17 @@ class Favorites extends React.Component {
                 <code>audio</code>
                 .
               </audio>
-            </>
+              <label htmlFor={ song.trackId }>
+                Favorita
+                <input
+                  type="checkbox"
+                  name="favorite"
+                  id={ song.trackId }
+                  onChange={ this.onChange }
+                  checked={ favorite }
+                />
+              </label>
+            </div>
           ))
         }
       </div>
