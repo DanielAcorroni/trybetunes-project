@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addSong, removeSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from '../pages/Loading';
 
 class MusicCard extends React.Component {
   constructor() {
     super();
     this.onChange = this.onChange.bind(this);
+    this.loadCheckbox = this.loadCheckbox.bind(this);
 
     this.state = {
       isLoading: false,
@@ -15,13 +16,19 @@ class MusicCard extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.loadCheckbox();
+  }
+
   onChange({ target }) {
     // consertar remove song
+    const { name } = target;
     const value = target.checked;
     const { previewUrl, trackId, trackName } = this.props;
     const { interactions } = this.state;
 
     this.setState({
+      [name]: value,
       interactions: 1,
     });
     const thisSong = {
@@ -46,6 +53,27 @@ class MusicCard extends React.Component {
         });
       });
     }
+  }
+
+  loadCheckbox() {
+    this.setState({
+      isLoading: true,
+    });
+    getFavoriteSongs().then((response) => {
+      this.setState({
+        isLoading: false,
+      });
+      const favoriteSongs = response;
+      const { trackName } = this.props;
+      favoriteSongs.forEach((track) => {
+        if (track.trackName === trackName) {
+          console.log(trackName);
+          this.setState({
+            favorite: true,
+          });
+        }
+      });
+    });
   }
 
   render() {
@@ -74,7 +102,7 @@ class MusicCard extends React.Component {
             name="favorite"
             id="favorite"
             onChange={ this.onChange }
-            value={ favorite }
+            checked={ favorite }
           />
         </label>
         {isLoading === true && <Loading />}
