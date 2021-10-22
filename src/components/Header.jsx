@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Loading from '../pages/Loading';
 import { getUser } from '../services/userAPI';
+import '../index.css';
 
 class Header extends React.Component {
   constructor() {
@@ -46,10 +47,12 @@ class Header extends React.Component {
     const { isLoading, userName } = this.state;
     return (
       <header data-testid="header-component">
-        <h1>Header</h1>
-        <Link data-testid="link-to-search" to="/search">Search</Link>
-        <Link data-testid="link-to-favorites" to="/favorites">Favorites</Link>
-        <Link data-testid="link-to-profile" to="/profile">Profile</Link>
+        <h1>TrybeTunes</h1>
+        <div>
+          <Link data-testid="link-to-search" to="/search">Search</Link>
+          <Link data-testid="link-to-favorites" to="/favorites">Favorites</Link>
+          <Link data-testid="link-to-profile" to="/profile">Profile</Link>
+        </div>
         <p data-testid="header-user-name">{userName}</p>
         {isLoading === true && <Loading />}
       </header>
