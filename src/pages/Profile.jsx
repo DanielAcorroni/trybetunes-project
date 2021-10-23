@@ -12,12 +12,10 @@ class Profile extends React.Component {
 
     this.state = {
       isLoading: false,
-      userInfo: {
-        description: '',
-        email: '',
-        image: '',
-        name: '',
-      },
+      description: '',
+      email: '',
+      image: '',
+      name: '',
     };
   }
 
@@ -32,20 +30,17 @@ class Profile extends React.Component {
     getUser().then((response) => {
       const { email, description, image, name } = response;
       this.setState({
-        userInfo: {
-          description,
-          email,
-          image,
-          name,
-        },
+        description,
+        email,
+        image,
+        name,
         isLoading: false,
       });
     });
   }
 
   render() {
-    const { userInfo, isLoading } = this.state;
-    const { description, email, image, name } = userInfo;
+    const { description, email, image, name, isLoading } = this.state;
     const defaultPic = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
     return (
       <div data-testid="page-profile">
