@@ -26,7 +26,6 @@ class Album extends React.Component {
       this.setState({
         musicsAlbum: response,
       });
-      console.log(response);
     });
   }
 

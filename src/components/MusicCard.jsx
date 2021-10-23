@@ -20,7 +20,6 @@ class MusicCard extends React.Component {
   }
 
   onChange({ target }) {
-    // consertar remove song
     const { name } = target;
     const value = target.checked;
     const { previewUrl, trackId, trackName } = this.props;
@@ -64,7 +63,6 @@ class MusicCard extends React.Component {
       const { trackName } = this.props;
       favoriteSongs.forEach((track) => {
         if (track.trackName === trackName) {
-          console.log(trackName);
           this.setState({
             favorite: true,
           });
