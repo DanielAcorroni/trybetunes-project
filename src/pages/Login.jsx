@@ -2,6 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import { createUser } from '../services/userAPI';
 import Loading from './Loading';
+import logo from '../assets/images/trybe-tunes-logo.png';
+import '../assets/index.css';
 
 class Login extends React.Component {
   constructor() {
@@ -52,8 +54,13 @@ class Login extends React.Component {
 
   render() {
     const { user, buttonDisabled, isLoading, logged } = this.state;
+    if (isLoading) {
+      return <Loading />;
+    }
     return (
-      <div data-testid="page-login">
+      <div data-testid="page-login" className="login-container">
+        <img src={ logo } alt="Logo TrybeTunes" />
+        <h1>TrybeTunes</h1>
         <input
           type="text"
           name="user"
@@ -70,7 +77,6 @@ class Login extends React.Component {
         >
           Entrar
         </button>
-        { isLoading === true && <Loading /> }
         { logged === true && <Redirect to="/search" /> }
       </div>
     );

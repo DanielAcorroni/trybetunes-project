@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Loading from '../pages/Loading';
 import { getUser } from '../services/userAPI';
-import '../index.css';
+import logo from '../assets/images/trybe-tunes-logo.png';
+import '../assets/index.css';
 
 class Header extends React.Component {
   constructor() {
     super();
-    this.changeLoading = this.changeLoading.bind(this);
     this.getUserName = this.getUserName.bind(this);
     this.state = {
-      isLoading: false,
       userName: '',
+      userImage: '',
     };
   }
 
@@ -21,40 +20,32 @@ class Header extends React.Component {
   }
 
   getUserName() {
-    this.changeLoading();
     getUser().then((response) => {
-      this.changeLoading();
       this.setState({
         userName: response.name,
+        userImage: response.image,
       });
     });
   }
 
-  changeLoading() {
-    const { isLoading } = this.state;
-    if (isLoading === true) {
-      this.setState({
-        isLoading: false,
-      });
-    } else {
-      this.setState({
-        isLoading: true,
-      });
-    }
-  }
-
   render() {
-    const { isLoading, userName } = this.state;
+    const { userName, userImage } = this.state;
+    const defaultPic = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
     return (
       <header data-testid="header-component">
-        <h1>TrybeTunes</h1>
+        <div>
+          <img src={ logo } alt="TrybeTunes logo" />
+          <h1>TrybeTunes</h1>
+        </div>
         <div>
           <Link data-testid="link-to-search" to="/search">Search</Link>
           <Link data-testid="link-to-favorites" to="/favorites">Favorites</Link>
           <Link data-testid="link-to-profile" to="/profile">Profile</Link>
         </div>
-        <p data-testid="header-user-name">{userName}</p>
-        {isLoading === true && <Loading />}
+        <div className="header-user">
+          <img src={ userImage || defaultPic } alt="Foto do usuario" />
+          <p data-testid="header-user-name">{userName || '...Carregando'}</p>
+        </div>
       </header>
     );
   }

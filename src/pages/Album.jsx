@@ -34,27 +34,29 @@ class Album extends React.Component {
     return (
       <div data-testid="page-album">
         <Header />
-        {
-          musicsAlbum.map((music) => {
-            if (music.previewUrl) {
+        <div className="album-close-look">
+          {
+            musicsAlbum.map((music) => {
+              if (music.previewUrl) {
+                return (
+                  <MusicCard
+                    key={ music.trackId }
+                    trackId={ music.trackId }
+                    previewUrl={ music.previewUrl }
+                    trackName={ music.trackName }
+                  />
+                );
+              }
               return (
-                <MusicCard
-                  key={ music.trackId }
-                  trackId={ music.trackId }
-                  previewUrl={ music.previewUrl }
-                  trackName={ music.trackName }
-                />
+                <div key={ music.collectionName }>
+                  <img src={ music.artworkUrl100 } alt={ music.collectionName } />
+                  <p data-testid="artist-name">{music.artistName}</p>
+                  <p data-testid="album-name">{music.collectionName}</p>
+                </div>
               );
-            }
-            return (
-              <div key={ music.collectionName }>
-                <img src={ music.artworkUrl100 } alt={ music.collectionName } />
-                <p data-testid="artist-name">{music.artistName}</p>
-                <p data-testid="album-name">{music.collectionName}</p>
-              </div>
-            );
-          })
-        }
+            })
+          }
+        </div>
       </div>
     );
   }

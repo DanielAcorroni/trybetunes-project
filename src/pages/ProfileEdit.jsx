@@ -33,9 +33,9 @@ class ProfileEdit extends React.Component {
 
     this.setState({
       [name]: value,
-    });
-
-    this.buttonHandler();
+    }, this.setState({
+      buttonDisabled: this.buttonHandler(),
+    }));
   }
 
   onClick() {
@@ -59,15 +59,12 @@ class ProfileEdit extends React.Component {
 
   buttonHandler() {
     const { description, email, image, name } = this.state;
-    if ((description && email && image && name).length > 1) {
-      this.setState({
-        buttonDisabled: false,
-      });
-    } else {
-      this.setState({
-        buttonDisabled: true,
-      });
-    }
+    const two = 2;
+    if (description.length < two) return true;
+    if (email.length < two) return true;
+    if (image.length < two) return true;
+    if (name.length < two) return true;
+    return false;
   }
 
   loadUser() {
@@ -82,8 +79,8 @@ class ProfileEdit extends React.Component {
         image,
         name,
         isLoading: false,
+        buttonDisabled: this.buttonHandler(),
       });
-      this.buttonHandler();
     });
   }
 
@@ -100,58 +97,60 @@ class ProfileEdit extends React.Component {
       <div data-testid="page-profile-edit">
         <Header />
         { isLoading === true && <Loading /> }
-        <label htmlFor="name-input">
-          Name:
-          <input
-            type="text"
-            name="name"
-            id="name-input"
-            onChange={ this.onChange }
-            value={ name }
-            data-testid="edit-input-name"
-          />
-        </label>
-        <label htmlFor="image-input">
-          Profile picture:
-          <input
-            type="text"
-            name="image"
-            id="image-input"
-            onChange={ this.onChange }
-            value={ image }
-            data-testid="edit-input-image"
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            type="email"
-            name="email"
-            id="email-input"
-            onChange={ this.onChange }
-            value={ email }
-            data-testid="edit-input-email"
-          />
-        </label>
-        <label htmlFor="description-input">
-          Description:
-          <textarea
-            name="description"
-            id="description-input"
-            onChange={ this.onChange }
-            value={ description }
-            data-testid="edit-input-description"
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="edit-button-save"
-          disabled={ buttonDisabled }
-          onClick={ this.onClick }
-        >
-          Editar perfil
-        </button>
-        { saved === true && <Redirect to="/profile" /> }
+        <form className="edit-profile-form">
+          <label htmlFor="name-input">
+            Name:
+            <input
+              type="text"
+              name="name"
+              id="name-input"
+              onChange={ this.onChange }
+              value={ name }
+              data-testid="edit-input-name"
+            />
+          </label>
+          <label htmlFor="image-input">
+            Profile picture:
+            <input
+              type="text"
+              name="image"
+              id="image-input"
+              onChange={ this.onChange }
+              value={ image }
+              data-testid="edit-input-image"
+            />
+          </label>
+          <label htmlFor="email">
+            Email:
+            <input
+              type="email"
+              name="email"
+              id="email-input"
+              onChange={ this.onChange }
+              value={ email }
+              data-testid="edit-input-email"
+            />
+          </label>
+          <label htmlFor="description-input">
+            Description:
+            <textarea
+              name="description"
+              id="description-input"
+              onChange={ this.onChange }
+              value={ description }
+              data-testid="edit-input-description"
+            />
+          </label>
+          <button
+            type="button"
+            data-testid="edit-button-save"
+            disabled={ buttonDisabled }
+            onClick={ this.onClick }
+          >
+            Editar perfil
+          </button>
+          { saved === true && <Redirect to="/profile" /> }
+        </form>
       </div>
     );
   }

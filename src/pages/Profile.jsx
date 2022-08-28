@@ -46,18 +46,28 @@ class Profile extends React.Component {
       <div data-testid="page-profile">
         <Header />
         { isLoading === true && <Loading /> }
-        <div>
-          <p>{name}</p>
-          <img
-            data-testid="profile-image"
-            src={ image || defaultPic }
-            alt="Profile avatar"
-            width="100px"
-          />
-          <p>{email}</p>
-          <p>{description}</p>
-        </div>
-        <Link to="/profile/edit">Editar perfil</Link>
+        <main className="profile-container">
+          <div>
+            <p>{name}</p>
+            <img
+              data-testid="profile-image"
+              src={ image || defaultPic }
+              alt="Profile avatar"
+              width="100px"
+            />
+            <p>
+              Email:
+              {' '}
+              {email}
+            </p>
+            <p>
+              Descrição:
+              {' '}
+              {description}
+            </p>
+          </div>
+          <Link to="/profile/edit">Editar perfil</Link>
+        </main>
       </div>
     );
   }

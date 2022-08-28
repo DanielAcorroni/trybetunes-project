@@ -67,35 +67,40 @@ class Favorites extends React.Component {
     return (
       <div data-testid="page-favorites">
         <Header />
-        {
-          favoriteSongs.map((song) => (
-            <div key={ song.trackId }>
-              <h4>{song.trackName}</h4>
-              <audio
-                key={ song.trackId }
-                data-testid="audio-component"
-                src={ song.previewUrl }
-                controls
-              >
-                <track kind="captions" />
-                O seu navegador não suporta o elemento
-                {' '}
-                <code>audio</code>
-                .
-              </audio>
-              <label htmlFor={ song.trackId }>
-                Favorita
-                <input
-                  type="checkbox"
-                  name="favorite"
-                  id={ song.trackId }
-                  onChange={ this.onChange }
-                  checked={ favorite }
-                />
-              </label>
-            </div>
-          ))
-        }
+        <main className="favorite-songs-container">
+          <h1>Músicas favoritas</h1>
+          <div className="favorite-songs">
+            {
+              favoriteSongs.map((song) => (
+                <div key={ song.trackId }>
+                  <h4>{song.trackName}</h4>
+                  <audio
+                    key={ song.trackId }
+                    data-testid="audio-component"
+                    src={ song.previewUrl }
+                    controls
+                  >
+                    <track kind="captions" />
+                    O seu navegador não suporta o elemento
+                    {' '}
+                    <code>audio</code>
+                    .
+                  </audio>
+                  <label htmlFor={ song.trackId }>
+                    Favorita
+                    <input
+                      type="checkbox"
+                      name="favorite"
+                      id={ song.trackId }
+                      onChange={ this.onChange }
+                      checked={ favorite }
+                    />
+                  </label>
+                </div>
+              ))
+            }
+          </div>
+        </main>
       </div>
     );
   }

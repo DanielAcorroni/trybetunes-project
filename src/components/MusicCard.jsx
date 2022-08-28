@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { addSong, removeSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
-import Loading from '../pages/Loading';
 
 class MusicCard extends React.Component {
   constructor() {
@@ -10,7 +9,6 @@ class MusicCard extends React.Component {
     this.loadCheckbox = this.loadCheckbox.bind(this);
 
     this.state = {
-      isLoading: false,
       favorite: false,
     };
   }
@@ -32,33 +30,17 @@ class MusicCard extends React.Component {
       previewUrl,
     };
     this.setState({
-      isLoading: true,
     }, () => {
       if (value === true) {
-        addSong(thisSong).then(() => {
-          this.setState({
-            isLoading: false,
-          });
-        });
+        addSong(thisSong);
       } else if (value === false) {
-        removeSong(thisSong).then(() => {
-          const loaded = false;
-          this.setState({
-            isLoading: loaded,
-          });
-        });
+        removeSong(thisSong);
       }
     });
   }
 
   loadCheckbox() {
-    this.setState({
-      isLoading: true,
-    });
     getFavoriteSongs().then((response) => {
-      this.setState({
-        isLoading: false,
-      });
       const favoriteSongs = response;
       const { trackName } = this.props;
       favoriteSongs.forEach((track) => {
@@ -73,9 +55,9 @@ class MusicCard extends React.Component {
 
   render() {
     const { previewUrl, trackId, trackName } = this.props;
-    const { favorite, isLoading } = this.state;
+    const { favorite } = this.state;
     return (
-      <>
+      <div className="music-card-play">
         <h4>{trackName}</h4>
         <audio
           data-testid="audio-component"
@@ -99,8 +81,7 @@ class MusicCard extends React.Component {
             checked={ favorite }
           />
         </label>
-        {isLoading === true && <Loading />}
-      </>
+      </div>
     );
   }
 }

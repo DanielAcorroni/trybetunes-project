@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import '../assets/index.css';
 
 class Cards extends React.Component {
   render() {
@@ -14,8 +15,12 @@ class Cards extends React.Component {
     const path = `/album/${collectionId}`;
 
     return (
-      <Link to={ path } data-testid={ `link-to-album-${collectionId}` }>
-        <div>
+      <Link
+        to={ path }
+        data-testid={ `link-to-album-${collectionId}` }
+        className="music-card"
+      >
+        <div className="music-cards-div">
           <img src={ artworkUrl100 } alt="Imagem do álbum" />
           <p>{collectionName}</p>
           <p>{artistName}</p>
